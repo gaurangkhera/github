@@ -10,7 +10,7 @@
 </form>
     <h1>{{repo.name}}'s files -</h1>
     {% for file in repo.files %}
-        <a href="/view/{{file.file_name}}">{{file.file_name}}</a><a href="/delete/{{file.file_name}}" class="btn btn-primary">Delete</a>
+        <a href="/view/{{file.id}}">{{file.file_name}}</a><a href="/delete/{{file.id}}" class="btn btn-primary">Delete</a>
     {% endfor %}
 </center>
 {% endblock %}
