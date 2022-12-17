@@ -1,5 +1,5 @@
 from hack import app, create_db,db
-from flask import render_template, redirect, url_for, send_file, request, abort
+from flask import render_template, redirect, url_for, send_from_directory, request, abort
 from flask_login import current_user, login_required, login_user, logout_user
 from hack.forms import FileForm, LoginForm, RegForm
 from hack.models import File, User
@@ -19,9 +19,9 @@ def home():
         file = request.files['file']
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], fname)
         new_file = File(file_name=fname, file=file_path, uploader=current_user.id)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], fname))
         db.session.add(new_file)
         db.session.commit()
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], fname))
     return render_template('index.html', form=form)
 
 @app.route('/reg', methods=['GET', 'POST'])
@@ -70,8 +70,7 @@ def login():
 @login_required 
 def view(file_name):
     file = File.query.filter_by(file_name=file_name).first()
-    path_ = os.path.join(app.config['UPLOAD_FOLDER'], file.file_name)
-    return send_file(path_)
+    return send_from_directory('static/uploads/', file.file_name)
 
 @app.route('/logout')
 @login_required
