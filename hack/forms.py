@@ -16,3 +16,7 @@ class FileForm(FlaskForm):
     file_name = StringField('Filename', validators=[DataRequired()])
     file = FileField("Upload a file", validators=[DataRequired()])
     submit = SubmitField('Upload')
+
+class RepoForm(FlaskForm):
+    name = StringField('Repository name', validators=[DataRequired()])
+    submit = SubmitField('Create')

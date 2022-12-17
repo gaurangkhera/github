@@ -14,12 +14,20 @@ class User(db.Model,UserMixin):
     id = db.Column(db.Integer,primary_key = True)
     email = db.Column(db.String(64),index=True)
     password = db.Column(db.String)
-    files = db.relationship('File', backref='user')
+    files = db.relationship('File')
+    repos = db.relationship('Repo')
 
 class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     file_name = db.Column(db.String)
     file = db.Column(db.String, nullable=False)
     uploader = db.Column(db.Integer, db.ForeignKey('user.id'))
+    repo = db.Column(db.Integer, db.ForeignKey('repo.id'))
+
+class Repo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    files = db.relationship('File')
 
 

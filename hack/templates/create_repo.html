@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+<form action="/createrepo" method="post" class="container-fluid mt-2">
+    {{form.hidden_tag()}}
+    {{form.csrf_token}}
+    {{form.name(class='form-control')}}
+    {{form.submit(class='btn btn-primary mt-2')}}
+</form>
+</center>
+{% endblock %}
