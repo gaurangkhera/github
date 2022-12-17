@@ -98,10 +98,10 @@ def login():
 
     return render_template('login.html', mess=mess, form=form)
 
-@app.route('/view/<file_name>')
+@app.route('/view/<id>')
 @login_required 
-def view(file_name):
-    file = File.query.filter_by(file_name=file_name).first()
+def view(id):
+    file = File.query.filter_by(id=id).first()
     return send_from_directory('static/uploads/', file.file_name)
 
 @app.route('/logout')
@@ -110,26 +110,21 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/delete/<file_name>')
+@app.route('/delete/<id>')
 @login_required
-def delete(file_name):
-    file = File.query.filter_by(file_name=file_name).first()
-    if current_user.id == file.uploader:
-        db.session.delete(file)
-        db.session.commit()
-    else:
-        return abort(404)
+def delete(id):
+    file = File.query.filter_by(id=id).first()
+    db.session.delete(file)
+    db.session.commit()
     return redirect(url_for('home'))
 
 @app.route('/deleterepo/<id>')
 @login_required
 def delete_repo(id):
     repo = Repo.query.filter_by(id=id).first()
-    if current_user.id == repo.user:
-        db.session.delete(repo)
-        db.session.commit()
-    else:
-        abort(404)
+    db.session.delete(repo)
+    db.session.commit()
+
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
