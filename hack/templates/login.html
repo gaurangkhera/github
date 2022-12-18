@@ -4,9 +4,9 @@
 <form action="/login" method="post" class="container-fluid mt-2 ">
     {{form.hidden_tag()}}
     {{form.csrf_token}}
-    {{form.email(class='form-control')}}<br>
-    {{form.password(class='form-control')}}
-    <div class="text-danger">{{mess}}</div>
+    {{form.email(class='form-control', placeholder='email')}}<br>
+    {{form.password(class='form-control', placeholder='passwoord')}}
+    <div class="text-danger">{{mess}}.</div>
     {{form.submit(class='btn btn-primary mt-2')}}
 </form>
 </center>

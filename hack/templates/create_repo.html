@@ -4,7 +4,7 @@
 <form action="/createrepo" method="post" class="container-fluid mt-2">
     {{form.hidden_tag()}}
     {{form.csrf_token}}
-    {{form.name(class='form-control')}}
+    {{form.name(class='form-control', placeholder='repository name')}}
     {{form.submit(class='btn btn-primary mt-2')}}
 </form>
 </center>
