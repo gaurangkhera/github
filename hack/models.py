@@ -28,6 +28,7 @@ class Repo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_private = db.Column(db.Boolean, default=False)
     files = db.relationship('File')
 
 

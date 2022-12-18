@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <center>
+{% if current_user.id == repo.user %}
 <form method=post enctype=multipart/form-data class="container-fluid mt-3">
     {{form.hidden_tag()}}
     {{form.csrf_token}}
@@ -8,9 +9,23 @@
     <input type="file" name="file" class="form-control"><br>
     {{form.submit(class='btn btn-primary')}}
 </form>
-    <h1>{{repo.name}}'s files -</h1>
+<h1>{{repo.name}}'s files -</h1>
     {% for file in repo.files %}
         <a href="/view/{{file.id}}">{{file.file_name}}</a><a href="/delete/{{file.id}}" class="btn btn-primary">Delete</a>
     {% endfor %}
+{% else %}
+<h1>{{repo.name}}'s files -</h1>
+{% if repo.files|length == 0%}
+     There are currently no files in this repository.
+{% else %}
+    {% for file in repo.files %}
+        <a href="/view/{{file.id}}">{{file.file_name}}</a>
+    {% endfor %}
+{% endif %}
+{% for file in repo.files %}
+    <a href="/view/{{file.id}}">{{file.file_name}}</a><br>
+{% endfor %}
+{% endif %}
+    
 </center>
 {% endblock %}

@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, send_from_directory, reque
 from flask_login import current_user, login_required, login_user, logout_user
 from hack.forms import FileForm, LoginForm, RegForm, RepoForm
 from hack.models import File, User, Repo
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 import os
 
 app.config['UPLOAD_FOLDER'] = 'hack/static/uploads/'
@@ -34,7 +34,8 @@ def create_repo():
     form = RepoForm()
     if form.validate_on_submit():
         name = form.name.data
-        new_repo = Repo(name=name, user=current_user.id, files=[])
+        private = form.private.data
+        new_repo = Repo(name=name, is_private=private, user=current_user.id, files=[])
         db.session.add(new_repo)
         db.session.commit()
         return redirect('/')
@@ -68,7 +69,7 @@ def reg():
         if user:
             mess = 'Account already exists'
         else:
-            new_user = User(email=email, password=password)
+            new_user = User(email=email, password=generate_password_hash(password))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -127,6 +128,23 @@ def delete_repo(id):
     db.session.commit()
 
     return redirect(url_for('home'))
+
+@app.route('/user/<id>')
+def view_user(id):
+    user = User.query.filter_by(id=id).first()
+    repos = user.repos
+    # for i in repos:
+    #     if i.is_private == 1:
+    #         if current_user.id != i.user:
+    #             return abort(404)
+    #         else:
+    #             return render_template('view_user.html', user=user)
+    return render_template('view_user.html', repos=repos,user=user)
+
+@app.route('/view_users')
+def view_all_users():
+    users = User.query.all()
+    return render_template('allusers.html', users=users)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)

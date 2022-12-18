@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField, FileField, BooleanField
+from wtforms import StringField,PasswordField,SubmitField, FileField
 from wtforms.validators import DataRequired
 
 class LoginForm(FlaskForm):
@@ -19,5 +19,4 @@ class FileForm(FlaskForm):
 
 class RepoForm(FlaskForm):
     name = StringField('Repository name', validators=[DataRequired()])
-    private = BooleanField('Keep these files private')
     submit = SubmitField('Create')

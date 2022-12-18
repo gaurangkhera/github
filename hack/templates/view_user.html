@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+    <h1>{{user.email}}'s repositories</h1>
+    {% for repo in user.repos %}
+        {% if repo.is_private == 0 %}
+            <a href="/viewrepo/{{repo.id}}">{{repo.name}}</a><br>
+        {% elif repo.is_private == 1 and current_user.id == repo.user %}
+            <a href="/viewrepo/{{repo.id}}">{{repo.name}}</a><br>
+        {% endif %}
+    {% endfor %}
+</center>
+{% endblock %}
