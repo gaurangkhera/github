@@ -29,6 +29,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/createrepo', methods=['GET', 'POST'])
+@login_required
 def create_repo():
     form = RepoForm()
     if form.validate_on_submit():
